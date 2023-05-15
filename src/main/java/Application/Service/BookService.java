@@ -4,6 +4,7 @@ import Application.DAO.BookDAO;
 import Application.Model.Book;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The purpose of a Service class is to contain "business logic" that sits between the web layer (controller) and
@@ -40,7 +41,7 @@ public class BookService {
      * @return all books.
      */
     public List<Book> getAllBooks() {
-        return null;
+        return bookDAO.getAllBooks();
     }
     /**
      * TODO: Use the bookDAO to persist a book to the database.
@@ -51,15 +52,20 @@ public class BookService {
      * key was already in use.)
      */
     public Book addBook(Book book) {
-
+        Book bookId = bookDAO.getBookByIsbn(book.getIsbn());
+      
+        if (Objects.isNull(bookId)) {
+            return bookDAO.insertBook(book);
+        } else {
         return null;
+    }
     }
     /**
      * TODO: Use the bookDAO to retrieve a list of all books that have a bookCount above 0.
      * @return all available books (bookCount over zero)
      */
     public List<Book> getAllAvailableBooks() {
-        return null;
+        return bookDAO.getBooksWithBookCountOverZero();
     }
 
 }
