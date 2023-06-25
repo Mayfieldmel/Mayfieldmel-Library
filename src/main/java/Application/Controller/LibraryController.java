@@ -56,11 +56,7 @@ public class LibraryController {
         this.authorService = new AuthorService();
     }
 
-    /**
-     * Method defines the structure of the Javalin Library API. Javalin methods will use handler methods
-     * to manipulate the Context object, which is a special object provided by Javalin which contains information about
-     * HTTP requests and can generate responses.
-     */
+    // javalin startup & endpoints
     public void startAPI(){
         Javalin app = Javalin.create();
         app.get("/books", this::getAllBooksHandler);
@@ -71,15 +67,8 @@ public class LibraryController {
         app.start(8080);
     }
 
-    /**
-     * Handler to post a new author.
-     * The Jackson ObjectMapper will automatically convert the JSON of the POST request into an Author object.
-     * If AuthorService returns a null author (meaning posting an Author was unsuccessful), the API will return a 400
-     * message (client error). There is no need to change anything in this method.
-     * @param ctx the context object handles information HTTP requests and generates responses within Javalin. It will
-     *            be available to this method automatically thanks to the app.post method.
-     * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
-     */
+    
+    //  Handler to post a new author.
     private void postAuthorHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Author author = mapper.readValue(ctx.body(), Author.class);
@@ -90,24 +79,14 @@ public class LibraryController {
             ctx.status(400);
         }
     }
-    /**
-     * Handler to retrieve all authors. There is no need to change anything in this method.
-     * @param ctx the context object handles information HTTP requests and generates responses within Javalin. It will
-     *            be available to this method automatically thanks to the app.put method.
-     */
+    
+    //   Handler to retrieve all authors. 
     private void getAllAuthorsHandler(Context ctx) {
         List<Author> authors = authorService.getAllAuthors();
         ctx.json(authors);
     }
-    /**
-     * Handler to post a new book. There is no need to change anything in this method.
-     * The Jackson ObjectMapper will automatically convert the JSON of the POST request into a Book object.
-     * If BookService returns a null book (meaning posting a Book was unsuccessful), the API will return a 400
-     * message (client error).
-     * @param ctx the context object handles information HTTP requests and generates responses within Javalin. It will
-     *            be available to this method automatically thanks to the app.post method.
-     * @throws JsonProcessingException will be thrown if there is an issue converting JSON into an object.
-     */
+
+    //  Handler to post a new book. There is no need to change anything in this method.
     private void postBookHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Book book = mapper.readValue(ctx.body(), Book.class);
@@ -118,20 +97,14 @@ public class LibraryController {
             ctx.status(400);
         }
     }
-    /**
-     * Handler to retrieve all books. There is no need to change anything in this method.
-     * @param ctx the context object handles information HTTP requests and generates responses within Javalin. It will
-     *            be available to this method automatically thanks to the app.put method.
-     */
+    
+    //   Handler to retrieve all books. 
     public void getAllBooksHandler(Context ctx){
         List<Book> books = bookService.getAllBooks();
         ctx.json(books);
     }
-    /**
-     * Handler to retrieve all books with a book count over zero. There is no need to change anything in this method.
-     * @param context the context object handles information HTTP requests and generates responses within Javalin.
-     *                It will be available to this method automatically thanks to the app.put method.
-     */
+    
+    // Handler to retrieve all books with a book count over zero.
     private void getAvailableBooksHandler(Context context) {
         context.json(bookService.getAllAvailableBooks());
     }
